@@ -9,3 +9,7 @@ export const _selectIsWorking = (isWorking) => {
 export const _selectCountdown = (countdown) => {
   return countdown;
 };
+
+export const _selectFinished = (finished) => {
+  return finished;
+};

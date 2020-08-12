@@ -15,7 +15,7 @@ const Menu = ({ items, addItemToQue }) => {
       renderItem={({ item }) => (
         <MenuItem item={item} onPress={() => handlePress(item)} />
       )}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => `${item.id}`}
     />
   );
 };

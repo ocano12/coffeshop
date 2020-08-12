@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
 import {
@@ -12,14 +12,17 @@ import {
 import { items } from '../../data/items';
 import Menu from '../../components/Menu';
 import Que from '../../components/Que';
+import Finished from '../../components/Finished';
 import {
   setWorking,
   setCountdown,
+  setFinished,
 } from '../../store/coffee-counter/coffee-counter.actions';
 import {
   selectQue,
   selectIsWorking,
   selectCountdown,
+  selectFinished,
 } from '../../store/coffee-counter/coffee-counter';
 
 import counterScreenStyles from './counterScreen.styles';
@@ -31,21 +34,32 @@ const CounterScreen = ({
   setWorking,
   setCountdown,
   countdown,
+  setFinished,
+  finished,
 }) => {
   useEffect(() => {
+    let timer;
+    let item;
     if (que.length) {
       if (!isWorking) {
         setWorking(true);
-        const item = que[0];
+        item = que[0];
         setCountdown(item.duration);
-        //grab first item of the que and dispatch countdown and dispatch is working
       } else {
-        if (countdown === 0) {
-          //dispatch finsihed
-          setWorking(false);
-        }
+        timer = setInterval(() => {
+          const newCountdown = countdown - 1;
+          console.log(countdown);
+          if (newCountdown >= 0) {
+            setCountdown(newCountdown);
+          } else {
+            clearInterval(timer);
+            setWorking(false);
+            setFinished(que[0]);
+          }
+        }, 1000);
       }
     }
+    return () => clearInterval(timer);
   }, [que, countdown]);
 
   return (
@@ -70,7 +84,9 @@ const CounterScreen = ({
             <View style={counterScreenStyles.bottom}>
               <Text style={counterScreenStyles.headerFont}>Finished</Text>
             </View>
-            <View></View>
+            <View>
+              <Finished finished={finished} />
+            </View>
           </View>
         </View>
       </View>
@@ -83,6 +99,7 @@ const mapStateToProps = (state) => {
     que: selectQue(state),
     isWorking: selectIsWorking(state),
     countdown: selectCountdown(state),
+    finished: selectFinished(state),
   };
 };
 
@@ -92,6 +109,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setCountdown(time) {
     return dispatch(setCountdown(time));
+  },
+  setFinished(item) {
+    return dispatch(setFinished(item));
   },
 });
 

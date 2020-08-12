@@ -2,16 +2,19 @@ import {
   _ADD_ITEM_TO_QUE,
   _SET_WORKING,
   _SET_COUNTDOWN,
+  _SET_FINISHED,
 } from './coffee-counter.actions';
+
 import {
   _selectQue,
   _selectIsWorking,
   _selectCountdown,
+  _selectFinished,
 } from './coffee-counter.selectors';
 
 const _initalState = {
   que: [],
-  pickUp: [],
+  finished: [],
   countdown: 0,
   isWorking: false,
 };
@@ -32,8 +35,12 @@ export const selectCountdown = (state) => {
   return _selectCountdown(countdown);
 };
 
+export const selectFinished = (state) => {
+  const finished = state.finished;
+  return _selectFinished(finished);
+};
+
 const coffeeCounter = (state = _initalState, action) => {
-  console.log(action.type);
   switch (action.type) {
     case _ADD_ITEM_TO_QUE: {
       return {
@@ -51,6 +58,13 @@ const coffeeCounter = (state = _initalState, action) => {
       return {
         ...state,
         countdown: action.countdown,
+      };
+    }
+    case _SET_FINISHED: {
+      return {
+        ...state,
+        finished: [...state.finished, action.finishedItem],
+        que: state.que.filter((item) => action.finishedItem.id !== item.id),
       };
     }
     default: {
