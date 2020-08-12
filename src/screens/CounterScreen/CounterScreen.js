@@ -41,6 +41,7 @@ const CounterScreen = ({
     if (que.length) {
       if (!isWorking) {
         setWorking(true);
+        //need to add a unique id for que item. So filter doesnt remove duplicate coffee
         item = que[0];
         setCountdown(item.duration);
       } else {
