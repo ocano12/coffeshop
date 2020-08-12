@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import MenuItem from './MenuItems';
+import { MenuItem } from './MenuItems';
 import { connect } from 'react-redux';
 import { addItemToQue } from '../store/coffee-counter/coffee-counter.actions';
 

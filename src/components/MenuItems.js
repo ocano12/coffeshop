@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Pressable, Text } from 'react-native';
 
-const MenuItem = ({ item, onPress }) => {
+export const MenuItem = ({ item, onPress }) => {
   return (
     <View key={item.id}>
       <Pressable onPress={onPress}>
@@ -11,4 +11,4 @@ const MenuItem = ({ item, onPress }) => {
   );
 };
 
-export default MenuItem;
+// export default MenuItem;

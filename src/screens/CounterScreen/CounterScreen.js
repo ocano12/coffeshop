@@ -10,9 +10,7 @@ import {
   FlatList,
 } from 'react-native';
 import { items } from '../../data/items';
-import Menu from '../../components/Menu';
-import Que from '../../components/Que';
-import Finished from '../../components/Finished';
+import { Que, Finished, Menu } from '../../components';
 import {
   setWorking,
   setCountdown,
@@ -22,7 +20,6 @@ import {
   selectQue,
   selectIsWorking,
   selectCountdown,
-  selectFinished,
 } from '../../store/coffee-counter/coffee-counter';
 
 import counterScreenStyles from './counterScreen.styles';
@@ -37,6 +34,7 @@ const CounterScreen = ({
   setFinished,
   finished,
 }) => {
+  //should probably move this logic out of here
   useEffect(() => {
     let timer;
     let item;
@@ -48,7 +46,6 @@ const CounterScreen = ({
       } else {
         timer = setInterval(() => {
           const newCountdown = countdown - 1;
-          console.log(countdown);
           if (newCountdown >= 0) {
             setCountdown(newCountdown);
           } else {
@@ -62,6 +59,7 @@ const CounterScreen = ({
     return () => clearInterval(timer);
   }, [que, countdown]);
 
+  //probably abstract some of this
   return (
     <SafeAreaView>
       <View style={counterScreenStyles.container}>
@@ -77,7 +75,7 @@ const CounterScreen = ({
               <Text style={counterScreenStyles.headerFont}>Que</Text>
             </View>
             <View>
-              <Que que={que} />
+              <Que />
             </View>
           </View>
           <View style={counterScreenStyles.section}>
@@ -85,7 +83,7 @@ const CounterScreen = ({
               <Text style={counterScreenStyles.headerFont}>Finished</Text>
             </View>
             <View>
-              <Finished finished={finished} />
+              <Finished />
             </View>
           </View>
         </View>
@@ -99,7 +97,6 @@ const mapStateToProps = (state) => {
     que: selectQue(state),
     isWorking: selectIsWorking(state),
     countdown: selectCountdown(state),
-    finished: selectFinished(state),
   };
 };
 

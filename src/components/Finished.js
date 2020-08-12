@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { selectFinished } from '../store/coffee-counter/coffee-counter';
 import { View, Text } from 'react-native';
 
 const Finished = ({ finished }) => {
@@ -11,4 +13,10 @@ const Finished = ({ finished }) => {
   });
 };
 
-export default Finished;
+const mapStateToProps = (state) => {
+  return {
+    finished: selectFinished(state),
+  };
+};
+
+export default connect(mapStateToProps)(Finished);

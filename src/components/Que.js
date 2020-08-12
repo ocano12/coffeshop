@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { View, Text } from 'react-native';
+import { selectQue } from '../store/coffee-counter/coffee-counter';
 
 const Que = ({ que }) => {
   return que.map((item, index) => {
@@ -11,4 +13,10 @@ const Que = ({ que }) => {
   });
 };
 
-export default Que;
+const mapStateToProps = (state) => {
+  return {
+    que: selectQue(state),
+  };
+};
+
+export default connect(mapStateToProps)(Que);
