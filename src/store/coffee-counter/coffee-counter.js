@@ -28,10 +28,12 @@ export const selectIsWorking = (state) => {
 
 export const selectCountdown = (state) => {
   const countdown = state.countdown;
-  return _selectCountdown(state);
+
+  return _selectCountdown(countdown);
 };
 
 const coffeeCounter = (state = _initalState, action) => {
+  console.log(action.type);
   switch (action.type) {
     case _ADD_ITEM_TO_QUE: {
       return {

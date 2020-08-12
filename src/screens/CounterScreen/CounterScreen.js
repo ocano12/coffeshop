@@ -10,8 +10,9 @@ import {
   FlatList,
 } from 'react-native';
 import { items } from '../../data/items';
+import Menu from '../../components/Menu';
+import Que from '../../components/Que';
 import {
-  addItemToQue,
   setWorking,
   setCountdown,
 } from '../../store/coffee-counter/coffee-counter.actions';
@@ -21,20 +22,7 @@ import {
   selectCountdown,
 } from '../../store/coffee-counter/coffee-counter';
 
-const style = StyleSheet.create({
-  bottom: {
-    paddingBottom: 8,
-  },
-  headerFont: {
-    fontSize: 24,
-  },
-  container: {
-    padding: 8,
-  },
-  section: {
-    paddingTop: 16,
-  },
-});
+import counterScreenStyles from './counterScreen.styles';
 
 const CounterScreen = ({
   que,
@@ -42,66 +30,47 @@ const CounterScreen = ({
   isWorking,
   setWorking,
   setCountdown,
+  countdown,
 }) => {
   useEffect(() => {
     if (que.length) {
       if (!isWorking) {
-        // setWorking(true);
+        setWorking(true);
         const item = que[0];
         setCountdown(item.duration);
         //grab first item of the que and dispatch countdown and dispatch is working
       } else {
-        //keep checking if its done
-        console.log('here');
+        if (countdown === 0) {
+          //dispatch finsihed
+          setWorking(false);
+        }
       }
     }
-  }, [que]);
-
-  const handlePress = (item) => {
-    addItemToQue(item);
-  };
-
-  const renderItem = ({ item }) => {
-    return (
-      <View key={item.id}>
-        <Pressable onPress={() => handlePress(item)}>
-          <Text>{item.name}</Text>
-        </Pressable>
-      </View>
-    );
-  };
-
-  const BuildQue = ({ que }) => {
-    return que.map((item, index) => {
-      return (
-        <View key={index}>
-          <Text>{item.name}</Text>
-        </View>
-      );
-    });
-  };
+  }, [que, countdown]);
 
   return (
     <SafeAreaView>
-      <View style={style.container}>
-        <View style={style.section}>
-          <View style={style.bottom}>
-            <Text style={style.headerFont}>Menu</Text>
+      <View style={counterScreenStyles.container}>
+        <View style={counterScreenStyles.section}>
+          <View style={counterScreenStyles.bottom}>
+            <Text style={counterScreenStyles.headerFont}>Menu</Text>
           </View>
           <View>
-            <FlatList
-              data={items}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-            />
+            <Menu items={items} />
           </View>
-          <View style={style.section}>
-            <View style={style.bottom}>
-              <Text style={style.headerFont}>Que</Text>
+          <View style={counterScreenStyles.section}>
+            <View style={counterScreenStyles.bottom}>
+              <Text style={counterScreenStyles.headerFont}>Que</Text>
             </View>
             <View>
-              <BuildQue que={que} />
+              <Que que={que} />
             </View>
+          </View>
+          <View style={counterScreenStyles.section}>
+            <View style={counterScreenStyles.bottom}>
+              <Text style={counterScreenStyles.headerFont}>Finished</Text>
+            </View>
+            <View></View>
           </View>
         </View>
       </View>
@@ -113,13 +82,11 @@ const mapStateToProps = (state) => {
   return {
     que: selectQue(state),
     isWorking: selectIsWorking(state),
+    countdown: selectCountdown(state),
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  addItemToQue(item) {
-    return dispatch(addItemToQue(item));
-  },
   setWorking(flag) {
     return dispatch(setWorking(flag));
   },

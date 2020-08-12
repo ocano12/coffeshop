@@ -3,6 +3,7 @@ export const _SET_COUNTDOWN = 'SET_COUNTDOWN';
 export const _SET_WORKING = 'SET_WORKING';
 
 export const addItemToQue = (item) => {
+  console.log(item);
   return {
     type: _ADD_ITEM_TO_QUE,
     item,
